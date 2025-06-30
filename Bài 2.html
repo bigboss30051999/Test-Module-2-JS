@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>So sánh phân số</title>
+</head>
+<body>
+<script>
+  let tu1 = +prompt("Nhập tử số phân số thứ nhất:");
+  let mau1 = 0;
+  for (let i = 0; ; i++) {
+    mau1 = +prompt("Nhập mẫu số phân số thứ nhất (khác 0):");
+    if (mau1 !== 0) break;
+    alert("Mẫu số không được bằng 0!");
+  }
+  let tu2 = +prompt("Nhập tử số phân số thứ hai:");
+  let mau2 = 0;
+  for (let i = 0; ; i++) {
+    mau2 = +prompt("Nhập mẫu số phân số thứ hai (khác 0):");
+    if (mau2 !== 0) break;
+    alert("Mẫu số không được bằng 0!");
+  }
+  function soSanhPhanSo(tu1, mau1, tu2, mau2) {
+    return tu1 * mau2 === tu2 * mau1;
+  }
+  if (soSanhPhanSo(tu1, mau1, tu2, mau2)) {
+    document.write(`<h3>Hai phân số ${tu1}/${mau1} và ${tu2}/${mau2} bằng nhau.</h3>`);
+  } else {
+    document.write(`<h3>Hai phân số ${tu1}/${mau1} và ${tu2}/${mau2} KHÔNG bằng nhau.</h3>`);
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Quản lý Sổ Tiết Kiệm</title>
+  <style>
+    table, th, td { border: 1px solid black; border-collapse: collapse; padding: 5px; }
+    table { width: 100%; margin-top: 10px; }
+  </style>
+</head>
+<body>
+<h2>Quản lý Sổ Tiết Kiệm</h2>
+<button onclick="themSoTietKiem()">Thêm Sổ Tiết Kiệm</button>
+<button onclick="xoaSoTietKiem()">Xóa Sổ Tiết Kiệm</button>
+<div id="ketQua"></div>
+
+<script>
+  // Class Sổ tiết kiệm
+  class SoTietKiem {
+    constructor(maSo, loai, hoTen, cmnd, ngayMo, soTien) {
+      this.maSo = maSo;
+      this.loai = loai;
+      this.hoTen = hoTen;
+      this.cmnd = cmnd;
+      this.ngayMo = ngayMo;
+      this.soTien = soTien;
+    }
+  }
+  const danhSachSTK = [];
+  // Hàm hiển thị danh sách
+  function hienThiDanhSach() {
+    if (danhSachSTK.length === 0) {
+      document.getElementById("ketQua").innerHTML = "<p>Chưa có sổ tiết kiệm nào.</p>";
+      return;
+    }
+
+    let danhSach = "<table><tr><th>Mã sổ</th><th>Loại</th><th>Họ tên</th><th>CMND</th><th>Ngày mở</th><th>Số tiền</th></tr>";
+    for (const stk of danhSachSTK) {
+      danhSach += `<tr>
+                  <td>${stk.maSo}</td>
+                  <td>${stk.loai}</td>
+                  <td>${stk.hoTen}</td>
+                  <td>${stk.cmnd}</td>
+                  <td>${stk.ngayMo}</td>
+                  <td>${stk.soTien.toLocaleString()}</td>
+                </tr>`;
+    }
+    danhSach += "</table>";
+    document.getElementById("ketQua").innerHTML = danhSach;
+  }
+
+  // Hàm kiểm tra định dạng ngày (dd/mm/yyyy)
+  function isValidDateFormat(dateStr) {
+    return /^\d{2}\/\d{2}\/\d{4}$/.test(dateStr);
+  }
+
+  // Hàm thêm
+  function themSoTietKiem() {
+    let maSo, loai, hoTen, cmnd, ngayMo, soTien;
+
+    // Nhập mã sổ
+    for (;;) {
+      maSo = prompt("Nhập mã sổ (tối đa 5 ký tự):").trim();
+      if (maSo.length > 5 || maSo === "") {
+        alert("Mã sổ không hợp lệ!");
+        continue;
+      }
+      if (danhSachSTK.some(stk => stk.maSo === maSo)) {
+        alert("Mã sổ đã tồn tại!");
+        return;
+      }
+      break;
+    }
+
+    // Nhập loại
+    for (;;) {
+      loai = prompt("Nhập loại tiết kiệm (tối đa 10 ký tự):").trim();
+      if (loai.length > 10 || loai === "") {
+        alert("Loại không hợp lệ!");
+      } else break;
+    }
+    for (;;) {
+      hoTen = prompt("Nhập họ tên khách hàng (tối đa 30 ký tự):").trim();
+      if (hoTen.length > 30 || hoTen === "") {
+        alert("Họ tên không hợp lệ!");
+      } else break;
+    }
+    for (;;) {
+      cmnd = +prompt("Nhập số CMND:");
+      if (isNaN(cmnd) || cmnd <= 0) {
+        alert("CMND không hợp lệ!");
+      } else break;
+    }
+    for (;;) {
+      ngayMo = prompt("Nhập ngày mở sổ (dd/mm/yyyy):").trim();
+      if (!isValidDateFormat(ngayMo)) {
+        alert("Ngày mở không đúng định dạng!");
+      } else break;
+    }
+    for (;;) {
+      soTien = +prompt("Nhập số tiền gửi:");
+      if (isNaN(soTien) || soTien <= 0) {
+        alert("Số tiền không hợp lệ!");
+      } else break;
+    }
+
+    // Thêm vào danh sách
+    const stkMoi = new SoTietKiem(maSo, loai, hoTen, cmnd, ngayMo, soTien);
+    danhSachSTK.push(stkMoi);
+    alert("Đã thêm sổ tiết kiệm thành công!");
+    hienThiDanhSach();
+  }
+  function xoaSoTietKiem() {
+    if (danhSachSTK.length === 0) {
+      alert("Danh sách đang trống!");
+      return;
+    }
+
+    let maSo;
+    for (;;) {
+      maSo = prompt("Nhập mã sổ tiết kiệm cần xóa:").trim();
+      if (maSo === "") {
+        alert("Không được để trống mã!");
+        continue;
+      }
+      if (!danhSachSTK.some(stk => stk.maSo === maSo)) {
+        alert("Mã không tồn tại!");
+      } else break;
+    }
+
+    const confirmDelete = confirm(`Bạn có chắc muốn xóa sổ có mã "${maSo}" không?`);
+    if (confirmDelete) {
+      const viTri = danhSachSTK.findIndex(stk => stk.maSo === maSo);
+      danhSachSTK.splice(viTri, 1);
+      alert("Đã xóa thành công.");
+      hienThiDanhSach();
+    }
+  }
+  hienThiDanhSach();
+</script>
+</body>
+</html>

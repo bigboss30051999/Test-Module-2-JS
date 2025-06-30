@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Lọc số nguyên tố</title>
+</head>
+<body>
+<script>
+    let n = 0;
+    let isValid = false;
+    for (let i = 0; !isValid; i++) {
+        n = +prompt("Nhập số lượng phần tử (n ≤ 50):");
+        if (!isNaN(n) && n > 0 && n <= 50) {
+            isValid = true;
+        } else {
+            alert("Vui lòng nhập số nguyên từ 1 đến 50!");
+        }
+    }
+    let a = [];
+    for (let i = 0; i < n; i++) {
+        let value = +prompt(`Nhập phần tử a[${i}]:`);
+        while (isNaN(value)) {
+            value = +prompt(`Giá trị không hợp lệ! Nhập lại a[${i}]:`);
+        }
+        a.push(value);
+    }
+    document.write("<h3>Mảng a đã nhập:</h3>");
+    document.write(a.join(", ") + "<br>");
+    function isPrime(num) {
+        if (num < 2) return false;
+        for (let i = 2; i <= Math.sqrt(num); i++) {
+            if (num % i === 0) return false;
+        }
+        return true;
+    }
+    let b = [];
+    for (let i = 0; i < a.length; i++) {
+        if (isPrime(a[i])) {
+            b.push(a[i]);
+        }
+    }
+    document.write("<h3>Các số nguyên tố trong mảng a (mảng b):</h3>");
+    if (b.length === 0) {
+        document.write("Không có số nguyên tố nào trong mảng a.");
+    } else {
+        document.write(b.join(", "));
+    }
+</script>
+</body>
+</html>
